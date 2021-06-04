@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+{{>header.html}}
+
+<body>
+    <div class="container">
+    <h1 class="text-center bg-info">Список дел</h1>
+        <div class="m-4">
+        <div class="row justify-content-end">
+            <div class=" col-3  align-self-end bg-white">
+              <a href="add.php">Добавить новую задачу</a>
+              &nbsp;</div>
+          </div>
+      </div>
+    </div>  
+
+    <div class="container">
+            <table class="table table-bordered">
+                <div class="row">
+                    <thead>
+                        <tr class="d-flex">
+                            <td class="col-lg-1"></td>
+                            <td class="col-lg-4">Задача</td>
+                            <td class="col-lg-2">Исполнитель</td>
+                            <td class="col-lg-2">e-mail</td>
+                            <td class="col-lg-2">выполнено</td>
+                            <td class="col-lg-1">удалить</td>
+                        </tr>
+                    </thead>
+                </div>
+            </table>
+            
+            {{#each list}}
+            <div class="row">
+                <p>Дата {{date}}</p>
+                <table class="table table-bordered">
+                    {{#each tasks}}
+                    
+                
+                        <tr class="d-flex">
+                            <td class="col-lg-1">
+                                 <input class="form-check-input m-2" type="checkbox" value="" id="flexCheckChecked" {{task_checkbox}}  disabled></td>
+                                <td class="col-lg-4"><p class="{{task_text}}">{{task_name}}</p></td>
+                                <td class="col-lg-2"><p class="{{task_text}}">{{user_name}}</p></td>
+                                <td class="col-lg-2"> <a href="send_mail.php?name={{user_name}}&task={{task_name}}&mail={{user_mail}}&date={{task_date}}">Отправить письмо назначенному пользователю</a></td>
+                                    <td class="col-lg-2"> <a href="sql_update.php?id={{task_id}}">Отметить как выполненную</a></td>
+                                        <td class="col-lg-1"> <a href="sql_delete.php?id={{task_id}}" onclick="return confirm('Удалить задачу безврозвратно ?')">Удалить задачу</a></td>
+                        </tr> 
+                        
+                    
+                    {{/each}}
+                </table>
+            </div>    
+            {{/each}}
+            
+    </div>    
+</body>
+        
