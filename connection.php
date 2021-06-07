@@ -7,7 +7,7 @@ require_once ("./vendor/autoload.php");
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-class Config
+class Config123
 {
     private $user = 'my_dbuser'; // пользователь
 
