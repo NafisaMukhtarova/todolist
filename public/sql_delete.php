@@ -1,14 +1,8 @@
 <?php
-require_once 'connection.php';
+
 require_once 'bootstrap.php';
-/*
-$config = new Config;
-$pdo = $config->Connect_PDO();
-*/
 
 //var_dump($result);
-
-
 //print $_GET['id'];
 
 $data=[':id' =>$_GET['id']]; //id записи

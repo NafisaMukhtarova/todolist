@@ -1,11 +1,7 @@
 <?php
 
-require_once 'connection.php';
 require_once 'bootstrap.php';
-/*
-$config = new Config;
-$pdo = $config->Connect_PDO();
-*/
+
 //Добавление контакта
 $data=[];
 

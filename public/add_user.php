@@ -1,8 +1,8 @@
 <?php
 
-
+require_once 'bootstrap.php';
+/*
 # With composer we can autoload the Handlebars package
-require_once ("./vendor/autoload.php");
 require_once 'connection.php';
 
 # If not using composer, you can still load it manually.
@@ -25,23 +25,19 @@ $handlebars = new Handlebars([
     "loader" => $partialsLoader,
     "partials_loader" => $partialsLoader
 ]);
+*/
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET')
-{
-$model = ['title'=> "Новый исполнитель"];
-//var_dump($model);
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $model = ['title'=> "Новый исполнитель"];
+    //var_dump($model);
 
-echo $handlebars->render("new_user", $model);
+    echo $handlebars->render("new_user", $model);
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST')
-{
-
-    $config = new Config;
-    $pdo = $config->Connect_PDO();
+    //$config = new Config;
+    //$pdo = $config->Connect_PDO();
     
     $data=[];
 
@@ -49,9 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     ':uname'=>$_POST['UserName'],
     ':umail'=>$_POST['UserEmail']];
     
-
     $result = $pdo->prepare("INSERT INTO `users_list` (`user_name`,`user_mail`) VALUES (:uname,:umail)");
+    
+    try {
     $result->execute($data);
-    header('Location: /.php');
+    $log->debug('Добавлен исполнитель ', ['uname' => $_POST['UserName'],'umail'=>$_POST['UserEmail'] ]);
+    } catch(PDOException $e) {
+            $log->error('Ошибка добавления исполнителя ', ['message' => $e->getMessage()]);
+            echo $e->getMessage();
+    }
 
+    //header('Location: /.php');
+    header('Location: /add.php');
 }

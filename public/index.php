@@ -1,7 +1,6 @@
 <?php
 # With composer we can autoload the Handlebars package
-require_once ("./vendor/autoload.php");
-require_once 'connection.php';
+
 require_once 'bootstrap.php';
 
 # If not using composer, you can still load it manually.

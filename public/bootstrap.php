@@ -1,6 +1,6 @@
 <?php
 
-require_once ("./vendor/autoload.php");
+require_once ("../vendor/autoload.php");
 
 use Handlebars\Handlebars;
 use Handlebars\Loader\FilesystemLoader;
@@ -8,14 +8,16 @@ use Handlebars\Loader\FilesystemLoader;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+$appdir = dirname(__DIR__);
+
+$dotenv = Dotenv\Dotenv::createImmutable($appdir);
 $dotenv->load();
 
 $log = new Logger('index.php');
-$log->pushHandler(new StreamHandler(__DIR__ .'/logs/debug/log', Logger::DEBUG));
+$log->pushHandler(new StreamHandler($appdir .'/logs/debug/log', Logger::DEBUG));
 
 # Set the partials files
-$partialsDir = __DIR__."/templates";
+$partialsDir = $appdir."/templates";
 $partialsLoader = new FilesystemLoader($partialsDir,
     [
         "extension" => "html"
@@ -79,5 +81,10 @@ class Config
 
 }
 //var_dump($_ENV);
-$config = new Config(getenv('CONFIG_DB'),getenv('CONFIG_USER'),getenv('CONFIG_PASSWORD'),getenv('CONFIG_HOST'));
+//$config = new Config(getenv('CONFIG_DB'),getenv('CONFIG_USER'),getenv('CONFIG_PASSWORD'),getenv('CONFIG_HOST'));
+$db = $_ENV['CONFIG_DB'];
+$us = $_ENV['CONFIG_USER'];
+$pw = $_ENV['CONFIG_PASSWORD'];
+$ht = $_ENV['CONFIG_HOST'];
+$config = new Config($db,$us,$pw,$ht);
 $pdo = $config->Connect_PDO($log);
