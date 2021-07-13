@@ -8,6 +8,24 @@
     
 
         <h1 class="text-center bg-info">{{title}}</h1>
+        {{#if user}}
+        <div class="row justify-content-end">
+            <div class=" col-3  align-self-end bg-white">
+              <p>
+                Вы авторизованы как {{user.user_name}}
+              </p>
+                <a href=" exit.php">Выход</a>
+              &nbsp;</div>
+          </div>
+        {{else}}
+        <div class="row justify-content-end">
+            <div class=" col-3  align-self-end bg-white">
+              <a href="auth.php">Авторизация</a>
+              &nbsp;</div>
+          </div>
+        {{/if}}
+
+
         <form action="sql_insert.php" method="POST">
             <div class="col-lg-4 mb-3">
                 <label for="task_date" class="form-label">Дата:</label>
@@ -29,7 +47,13 @@
                     {{/each}}
                     </select>
                 </div>
+
+                {{# if user.admin}}  
                 <div class="col-lg-4"><a href="add_user.php">Добавить исполнителя</a></div>
+                {{else}}
+                {{/if}}
+
+
             </div>
 
             <div class="form-check">

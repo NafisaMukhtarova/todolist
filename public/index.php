@@ -3,17 +3,10 @@
 
 require_once 'bootstrap.php';
 
-# If not using composer, you can still load it manually.
-# require 'src/Handlebars/Autoloader.php';
-# Handlebars\Autoloader::register();
-
+session_start();
 
 //список контактов для левой части экрана
 $result = $pdo->prepare("SELECT A.`task_date`, A.`task_name`, A.`task_priority`, A.`task_done`, A.`task_id`, B.`user_name`, B.`user_mail`FROM `todo_list`A, `users_list`B WHERE A.`user_id`=B.`user_id` ORDER BY A.`task_date`DESC,A.`task_priority` DESC ");
-
-//???????????????????????????????????
-//ВОПРОС ИСПОЛЬЗОВАНИЯ ЛОГИРОВАНИЯ
-//Данный скрипт не отработал если не правильное имя таблицы
 
 
 try {
@@ -52,23 +45,11 @@ while ($row = $result->fetch())
     }
 
     $data_row = ['task_date'=>$row['task_date'],'task_name'=>$row['task_name'],'task_priority'=>$row['task_priority'],'task_checkbox'=>$selected,'task_text'=>$text_del,'task_id'=>$row['task_id'],'user_name'=>$row['user_name'],'user_mail'=>$row['user_mail']];
-    //echo $row['task_name'];
-    //echo "<br>СТРОКА<br>";
-    //var_dump($selected);
-    //var_dump($data_row);
-    //echo "<br>";
-    if($task_date==$row['task_date'] )
-    {
     
+    if($task_date==$row['task_date'] ) {
         //собираем подмассив
-     $data[] = $data_row;
-     
-
-    }
-    else
-    {
-        
-        
+        $data[] = $data_row;
+    } else {
         //var_dump($data);
         //предыдущий подмассив
         if($task_date!=Null)
@@ -83,9 +64,22 @@ while ($row = $result->fetch())
 }
 //последний подмассив
 $data_model[] = ['date'=> $task_date,'tasks'=>$data];
-
 //var_dump($data);
 //var_dump($data_model);
 $model = ['list'=>$data_model];
 //var_dump($model);
+
+//  Доступ пользователя
+if (isset($_SESSION['user_id'])) {
+    $result_user = $pdo->prepare("SELECT * FROM `users` WHERE `user_id`=?");
+    $result_user->execute([$_SESSION['user_id']]);
+
+    while ($row = $result_user->fetch()) {
+        $user = array('user_name'=>$row['name'],'admin'=>$row['admin_rights'] );
+    }
+    $model += ['user'=>$user];
+} else {
+    $model += ['user'=>NULL];
+}
+
 echo $handlebars->render("main", $model);

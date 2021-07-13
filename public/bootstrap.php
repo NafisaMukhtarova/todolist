@@ -13,7 +13,7 @@ $appdir = dirname(__DIR__);
 $dotenv = Dotenv\Dotenv::createImmutable($appdir);
 $dotenv->load();
 
-$log = new Logger('index.php');
+$log = new Logger('todolist');
 $log->pushHandler(new StreamHandler($appdir .'/logs/debug/log', Logger::DEBUG));
 
 # Set the partials files
